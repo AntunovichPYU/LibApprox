@@ -64,7 +64,7 @@ public class HASH_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: ??
+    //Post: containsKey != null
     public boolean containsKey(Object key) {
         return keys.search(key, false) != -1;
     }
@@ -105,7 +105,7 @@ public class HASH_MAP<K,V> {
         return value;
     }
 
-    //Pre: size != 0
+    //Pre: true
     //Post: size = 0
     public void	clear() {
         keys.removeAll();
@@ -114,24 +114,24 @@ public class HASH_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: ??
+    //Post: containsValue != null
     public boolean containsValue(Object value) {
         return values.search(value, false) != -1;
     }
 
-    //Pre: set.size() == 0
+    //Pre: true
     //Post: set.size() == keys.size()
     public Set<K> keySet() {
         return new HashSet<>(keys.collection());
     }
 
-    //Pre: collection.size() == 0
+    //Pre: true
     //Post: collection.size() == values.size()
     public Collection<V> values() {
         return values.collection();
     }
 
-    //Pre: set.size() == 0
+    //Pre: true
     //Post: set.size() == entries.size()
     public Set<Map.Entry<K,V>> entrySet() {
         return new HashSet<>(entries.collection());
@@ -148,7 +148,7 @@ public class HASH_MAP<K,V> {
         }
     }
 
-    //Pre: entry is not in map
+    //Pre: true
     //Post: size == size' + 1
     public V putIfAbsent(K key, V value) {
         int i = keys.search(key, false);
@@ -168,7 +168,7 @@ public class HASH_MAP<K,V> {
         }
     }
 
-    //Pre: entry is in map
+    //Pre: true
     //Post: currentValue == newValue
     public boolean replace(K key, V oldValue, V newValue) {
         int i = keys.search(key, false);
@@ -183,7 +183,7 @@ public class HASH_MAP<K,V> {
         }
     }
 
-    //Pre: entry is in map
+    //Pre: true
     //Post: currentValue == value
     public V replace(K key, V value) {
         int i = keys.search(key, false);
@@ -199,7 +199,7 @@ public class HASH_MAP<K,V> {
         }
     }
 
-    //Pre: key is not mapped
+    //Pre: function does not modify map
     //Post: size == size' + 1
     public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
         if (keys.search(key, false) != -1) {
@@ -216,7 +216,7 @@ public class HASH_MAP<K,V> {
         }
     }
 
-    //Pre: key is mapped
+    //Pre: function does not modify map
     //Post: size == size' || size == size' - 1
     public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
         int i = keys.search(key, false);
@@ -238,7 +238,7 @@ public class HASH_MAP<K,V> {
         return null;
     }
 
-    //Pre: key is mapped
+    //Pre: function does not modify map
     //Post: size == size' || size == size' - 1
     public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
         int i = keys.search(key, false);
@@ -260,8 +260,8 @@ public class HASH_MAP<K,V> {
         return null;
     }
 
-    //Pre: key is mapped
-    //Post: currentValue == (oldValue, value) -> ? || currentValue == value
+    //Pre: function does not modify map
+    //Post: currentValue == (oldValue, value) -> remappingFunction || currentValue == value
     public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         int i = keys.search(key, false);
         if (i != -1) {
@@ -291,7 +291,7 @@ public class HASH_MAP<K,V> {
         return null;
     }
 
-    //Pre: clone.isEmpty()
+    //Pre: true
     //Post: clone.size() == this.size()
     public Object clone() {
         Base<K> k = new Base<>();

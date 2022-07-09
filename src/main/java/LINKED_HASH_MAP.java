@@ -9,7 +9,7 @@ public class LINKED_HASH_MAP<K,V> extends HASH_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: ??
+    //Post: containsValue != null
     public boolean containsValue(Object value) {
         return values.search(value, false) != -1;
     }
@@ -33,7 +33,7 @@ public class LINKED_HASH_MAP<K,V> extends HASH_MAP<K,V> {
         }
     }
 
-    //Pre: size != 0
+    //Pre: true
     //Post: size = 0
     public void	clear() {
         keys.removeAll();
@@ -41,19 +41,19 @@ public class LINKED_HASH_MAP<K,V> extends HASH_MAP<K,V> {
         entries.removeAll();
     }
 
-    //Pre: set.size() == 0
+    //Pre: true
     //Post: set.size() == keys.size()
     public Set<K> keySet() {
         return new HashSet<>(keys.collection());
     }
 
-    //Pre: collection.size() == 0
+    //Pre: true
     //Post: collection.size() == values.size()
     public Collection<V> values() {
         return values.collection();
     }
 
-    //Pre: set.size() == 0
+    //Pre: true
     //Post: set.size() == entries.size()
     public Set<Map.Entry<K,V>> entrySet() {
         return new HashSet<>(entries.collection());

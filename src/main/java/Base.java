@@ -25,7 +25,7 @@ public class Base<E> {
 
     public int size() {return size;} //возвращает размер списка
 
-    public void sort() {} //сортирует все элементы по возрастанию
+    public void sort(boolean reverse) {} //сортирует все элементы по возрастанию, при reverse = true элементы сортируются по убыванию
 
     public boolean addAll(int index, Collection<?> c) {return true;} //добавляет все элементы из указанной коллекции
                                                                             //при успешном добавлении возвращает true, иначе false
