@@ -46,18 +46,18 @@ public class TREE_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: ??
+    //Post: containsKey != null
     public boolean containsKey(Object key) {
         return keys.search(key, false) != -1;
     }
 
     //Pre: true
-    //Post: ??
+    //Post: containsValue != null
     public boolean containsValue(Object value) {
         return values.search(value, false) != -1;
     }
 
-    //Pre: key is in map
+    //Pre: true
     //Post: get == base.get()
     public V get(Object key) {
         int i = keys.search(key, false);
@@ -77,7 +77,7 @@ public class TREE_MAP<K,V> {
         return keys.get(size() - 1);
     }
 
-    //Pre: entries are not in map
+    //Pre: m != null
     //Post: size = size' + m.size()
     public void putAll(Map<? extends K, ? extends V> m) {
         keys.addAll(size(), m.keySet());
@@ -85,7 +85,7 @@ public class TREE_MAP<K,V> {
         entries.addAll(size(), m.entrySet());
     }
 
-    //Pre: entry is not in map
+    //Pre: true
     //Post: size = size' + 1
     public V put(K key, V value) {
         if (keys.search(key, false) == -1) {
@@ -124,7 +124,7 @@ public class TREE_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: clone.size() == this.size()
+    //Post: clone == this
     public Object clone() {
         Base<K> k = new Base<>();
         Base<V> v = new Base<>();
@@ -154,7 +154,7 @@ public class TREE_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: size == size' - 1 || pollFirstEntry() == firstEntry()
+    //Post: size == size' - 1 && pollFirstEntry() == firstEntry()
     public Map.Entry<K,V> pollFirstEntry() {
         if (size() == 0) {
             return null;
@@ -168,7 +168,7 @@ public class TREE_MAP<K,V> {
     }
 
     //Pre: true
-    //Post: size == size' - 1 || pollLastEntry() == lastEntry()
+    //Post: size == size' - 1 && pollLastEntry() == lastEntry()
     public Map.Entry<K,V> pollLastEntry() {
         if (size() == 0) {
             return null;
@@ -303,7 +303,7 @@ public class TREE_MAP<K,V> {
         }
     }
 
-    //Pre: entry is in map
+    //Pre: true
     //Post: currentValue == value
     public V replace(K key, V value) {
         int i = keys.search(key, false);
@@ -335,11 +335,11 @@ public class TREE_MAP<K,V> {
     //Pre: fromKey >= 0; toKey < size()
     //Post: subMap.size() <= map.size()
     public TREE_MAP<K,V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
-        Base<K> dk = keys.subSet(fromKey, fromInclusive, toKey, toInclusive);
+        Base<K> dk = keys.subList(fromKey, fromInclusive, toKey, toInclusive);
         int iFrom = keys.search(fromKey, false);
         int iTo = keys.search(toKey, false);
-        Base<V> dv = values.subSet(values.get(iFrom), fromInclusive, values.get(iTo), toInclusive);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(iFrom), fromInclusive, entries.get(iTo), toInclusive);
+        Base<V> dv = values.subList(values.get(iFrom), fromInclusive, values.get(iTo), toInclusive);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(iFrom), fromInclusive, entries.get(iTo), toInclusive);
 
         return new TREE_MAP<>(dk, dv, de);
     }
@@ -347,10 +347,10 @@ public class TREE_MAP<K,V> {
     //Pre: toKey < size()
     //Post: headMap.size() <= map.size()
     public TREE_MAP<K,V> headMap(K toKey, boolean inclusive) {
-        Base<K> dk = keys.subSet(keys.get(0), true, toKey, inclusive);
+        Base<K> dk = keys.subList(keys.get(0), true, toKey, inclusive);
         int iTo = keys.search(toKey, false);
-        Base<V> dv = values.subSet(values.get(0), true, values.get(iTo), inclusive);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(0), true, entries.get(iTo), inclusive);
+        Base<V> dv = values.subList(values.get(0), true, values.get(iTo), inclusive);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(0), true, entries.get(iTo), inclusive);
 
         return new TREE_MAP<>(dk, dv, de);
     }
@@ -358,10 +358,10 @@ public class TREE_MAP<K,V> {
     //Pre: fromKey >= 0
     //Post: tailMap.size() <= map.size()
     public TREE_MAP<K,V> tailMap(K fromKey, boolean inclusive) {
-        Base<K> dk = keys.subSet(fromKey, inclusive, keys.get(size() - 1), true);
+        Base<K> dk = keys.subList(fromKey, inclusive, keys.get(size() - 1), true);
         int iFrom = keys.search(fromKey, false);
-        Base<V> dv = values.subSet(values.get(iFrom), inclusive, values.get(size() - 1), true);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(iFrom), inclusive, entries.get(size() - 1), true);
+        Base<V> dv = values.subList(values.get(iFrom), inclusive, values.get(size() - 1), true);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(iFrom), inclusive, entries.get(size() - 1), true);
 
         return new TREE_MAP<>(dk, dv, de);
     }
@@ -369,11 +369,11 @@ public class TREE_MAP<K,V> {
     //Pre: fromKey >= 0; toKey < size()
     //Post: subMap.size() <= map.size()
     public TREE_MAP<K,V> subMap(K fromKey, K toKey) {
-        Base<K> dk = keys.subSet(fromKey, true, toKey, false);
+        Base<K> dk = keys.subList(fromKey, true, toKey, false);
         int iFrom = keys.search(fromKey, false);
         int iTo = keys.search(toKey, false);
-        Base<V> dv = values.subSet(values.get(iFrom), true, values.get(iTo), false);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(iFrom), true, entries.get(iTo), false);
+        Base<V> dv = values.subList(values.get(iFrom), true, values.get(iTo), false);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(iFrom), true, entries.get(iTo), false);
 
         return new TREE_MAP<>(dk, dv, de);
     }
@@ -381,10 +381,10 @@ public class TREE_MAP<K,V> {
     //Pre: toKey < size()
     //Post: headMap.size() <= map.size()
     public TREE_MAP<K,V> headMap(K toKey) {
-        Base<K> dk = keys.subSet(keys.get(0), true, toKey, false);
+        Base<K> dk = keys.subList(keys.get(0), true, toKey, false);
         int iTo = keys.search(toKey, false);
-        Base<V> dv = values.subSet(values.get(0), true, values.get(iTo), false);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(0), true, entries.get(iTo), false);
+        Base<V> dv = values.subList(values.get(0), true, values.get(iTo), false);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(0), true, entries.get(iTo), false);
 
         return new TREE_MAP<>(dk, dv, de);
     }
@@ -392,10 +392,10 @@ public class TREE_MAP<K,V> {
     //Pre: fromKey >= 0
     //Post: tailMap.size() <= map.size()
     public TREE_MAP<K,V> tailMap(K fromKey) {
-        Base<K> dk = keys.subSet(fromKey, true, keys.get(size() - 1), true);
+        Base<K> dk = keys.subList(fromKey, true, keys.get(size() - 1), true);
         int iFrom = keys.search(fromKey, false);
-        Base<V> dv = values.subSet(values.get(iFrom), true, values.get(size() - 1), true);
-        Base<Map.Entry<K,V>> de = entries.subSet(entries.get(iFrom), true, entries.get(size() - 1), true);
+        Base<V> dv = values.subList(values.get(iFrom), true, values.get(size() - 1), true);
+        Base<Map.Entry<K,V>> de = entries.subList(entries.get(iFrom), true, entries.get(size() - 1), true);
 
         return new TREE_MAP<>(dk, dv, de);
     }

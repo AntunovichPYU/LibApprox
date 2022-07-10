@@ -32,7 +32,7 @@ public class Base<E> {
 
     public Base<E> removeAll() {return this;} //удаляет все элементы в списке, возвращает удаленные элементы
 
-    public Base<E> subSet(E fromElement, boolean fromInclusive, E toElement,   boolean toInclusive) {return new Base<>();}
+    public Base<E> subList(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) {return new Base<>();}
     //возвращает новый сет, который состоит из элементов, находящихся между fromElement и toElement
 
     public E getNearest(E e, boolean lower) {return e;}

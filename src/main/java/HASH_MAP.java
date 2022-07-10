@@ -55,7 +55,7 @@ public class HASH_MAP<K,V> {
         return size() == 0;
     }
 
-    //Pre: key is in map
+    //Pre: true
     //Post: get == base.get()
     public V get(Object key) {
         int i = keys.search(key, false);
@@ -69,7 +69,7 @@ public class HASH_MAP<K,V> {
         return keys.search(key, false) != -1;
     }
 
-    //Pre: entry is not in map
+    //Pre: true
     //Post: size = size' + 1
     public V put(K key, V value) {
         if (keys.search(key, false) == -1) {
@@ -86,7 +86,7 @@ public class HASH_MAP<K,V> {
         return value;
     }
 
-    //Pre: entries are not in map
+    //Pre: true
     //Post: size = size' + m.size()
     public void	putAll(Map<? extends K, ? extends V> m) {
         keys.addAll(size(), m.keySet());
@@ -94,7 +94,7 @@ public class HASH_MAP<K,V> {
         entries.addAll(size(), m.entrySet());
     }
 
-    //Pre: entry is in map
+    //Pre: true
     //Post: size = size' - 1
     public V remove(Object key) {
         int i = keys.search(key, false);

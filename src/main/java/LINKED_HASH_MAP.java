@@ -14,7 +14,7 @@ public class LINKED_HASH_MAP<K,V> extends HASH_MAP<K,V> {
         return values.search(value, false) != -1;
     }
 
-    //Pre: key is in map
+    //Pre: true
     //Post: get == base.get()
     public V get(Object key) {
         int i = keys.search(key, false);
